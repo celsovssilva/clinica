@@ -1,0 +1,21 @@
+{% extends '../base.html' %}
+{% load static %}
+
+{% block title %}Bem-vindo!{% endblock %}
+
+{% block content %}
+<section class="hero-section">
+    <div class="hero-content">
+        <h2>Sua sáude, nossa prioridade.</h2>
+        <p>
+            Oferecemos cuidados de alta qualidade com
+            foco na sua saúde e bem-estar.
+        </p>
+        <div class="hero-buttons">
+              <a href="{% url 'login' %}" class="btn btn-primary">Login</a>
+            <a href="{% url 'pacienteurl' %}" class="btn btn-secondary">Sou Paciente</a>
+            <a href="{% url 'medicourl' %}" class="btn btn-secondary">Sou Médico</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

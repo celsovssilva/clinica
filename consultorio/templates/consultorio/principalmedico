@@ -1,0 +1,33 @@
+{% extends "../base.html" %}
+
+{% block title %}Área do Paciente{% endblock %}
+
+{% block content %}
+<h2>Médicos Disponíveis</h2>
+
+{% for medico in medicos %}
+<div class="medico-card">
+    <h3>Dr. {{ medico.user.first_name }} {{ medico.user.last_name }}</h3>
+    <p>Especialidade: {{ medico.especialidade }}</p>
+
+    <h4>Horários disponíveis:</h4>
+    <ul>
+        {% for horario in medico.horariodisponivel_set.all %}
+        <li>
+            {{ horario.dia }} - {{ horario.hora }}
+            {% if horario.disponivel %}
+            <form method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="medico_id" value="{{ medico.id }}">
+                <input type="hidden" name="horario_id" value="{{ horario.id }}">
+                <button type="submit">Agendar</button>
+            </form>
+            {% else %}
+            <span>(Indisponível)</span>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endfor %}
+{% endblock %}

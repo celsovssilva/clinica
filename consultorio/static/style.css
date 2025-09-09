@@ -1,0 +1,151 @@
+/* Paleta de Cores */
+:root {
+    --marrom-escuro: #4B3621;
+    --bege-claro: #E8E2D7;
+    --dourado: #B8860B;
+}
+
+/* Estilos gerais */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bege-claro);
+    color: var(--marrom-escuro);
+}
+
+.navbar {
+    background-color: var(--marrom-escuro);
+    padding: 1rem 2rem;
+    color: var(--bege-claro);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.navbar a {
+    color: var(--bege-claro);
+    text-decoration: none;
+    margin-left: 1.5rem;
+    font-weight: bold;
+}
+
+.hero-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    height: calc(100vh - 80px); /* 80px é uma estimativa da altura do header */
+    background-color: var(--bege-claro);
+}
+
+.hero-content {
+    max-width: 600px;
+    padding: 2rem;
+}
+
+.hero-content h2 {
+    font-size: 3rem;
+    color: var(--marrom-escuro);
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    line-height: 1.5;
+}
+
+.hero-buttons {
+    margin-top: 2rem;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--dourado);
+    color: var(--marrom-escuro);
+}
+
+.btn-primary:hover {
+    background-color: #a8790a;
+}
+
+.btn-secondary {
+    background-color: transparent;
+    border: 2px solid var(--marrom-escuro);
+    color: var(--marrom-escuro);
+}
+
+.btn-secondary:hover {
+    background-color: var(--marrom-escuro);
+    color: var(--bege-claro);
+}
+
+footer {
+    text-align: center;
+    padding: 1rem;
+    background-color: var(--marrom-escuro);
+    color: var(--bege-claro);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Estilos para a página de serviços */
+.services-header {
+    text-align: center;
+    padding: 3rem 1rem;
+    background-color: var(--bege-claro);
+}
+
+.services-header h1 {
+    font-size: 2.5rem;
+    color: var(--marrom-escuro);
+}
+
+.services-header p {
+    font-size: 1.2rem;
+    color: var(--marrom-escuro);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.service-card {
+    background-color: #fff;
+    border: 1px solid var(--marrom-escuro);
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.service-card h3 {
+    color: var(--dourado);
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+
+.service-card p {
+    color: var(--marrom-escuro);
+    line-height: 1.6;
+}
