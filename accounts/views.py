@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from django.contrib.auth import login
 from .forms import PacienteSignUpForm, MedicoSignUpForm
-from .models import Paciente,Medico
+from .models import Paciente,Medico, Especialidade
 
 # Create your views here.
 
@@ -10,6 +10,7 @@ def paciente(request):
         form = PacienteSignUpForm(request.POST)
         if form.is_valid():
             user = form.save()
+
             Paciente.objects.create(
                 user=user,
                 cpf=form.cleaned_data.get('cpf'),
@@ -17,23 +18,37 @@ def paciente(request):
                 telefone=form.cleaned_data.get('telefone')
             )
             login(request,user)
-            return redirect("principal")
+            return redirect("login")
     else:
         form= PacienteSignUpForm()
     return render(request,'registration/paciente.html', {'form': form})
+
+
 
 
 def medico(request):
     if request.method == 'POST':
         form = MedicoSignUpForm(request.POST)
         if form.is_valid():
-            user=form.save()
+          
+            user = form.save()
+           
+            crm = form.cleaned_data.get('crm')
+            especialidade_nome = form.cleaned_data.get('especialidade')
+
+
+            especialidade_obj, created = Especialidade.objects.get_or_create(nome=especialidade_nome)
+
+       
             Medico.objects.create(
                 user=user,
-                especialidade=form.cleaned_data.get('especialidade')
+                crm=crm,
+                especialidade=especialidade_obj
             )
-            login(request,user)
-            return redirect('principalmedico')
+
+            login(request, user)
+            return redirect('login')
     else:
-        form= MedicoSignUpForm()
-    return render(request, 'registration/medico.html', {'form':form})
+        form = MedicoSignUpForm()
+    
+    return render(request, 'registration/medico.html', {'form': form})
