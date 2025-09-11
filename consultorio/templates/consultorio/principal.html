@@ -1,42 +1,65 @@
 {% extends "../base.html" %}
 
-{% block title %}Área do Médico{% endblock %}
+
+
+{% block title %}Área do Paciente{% endblock %}
+
+
 
 {% block content %}
-<h2>Seus Pacientes para Hoje</h2>
 
-{% if pacientesDoDia %}
-<ul>
-    {% for agendamento in pacientesDoDia %}
-    <li>
-        <strong>{{ agendamento.horario.hora }}</strong> - Paciente: {{ agendamento.paciente.user.get_full_name }}
-    </li>
-    {% endfor %}
-</ul>
-{% else %}
-<p>Nenhum paciente agendado para hoje.</p>
-{% endif %}
+<h2>Médicos Disponíveis</h2>
 
-<hr>
 
-<h3>Definir Horário de Atendimento</h3>
-<form method="post">
-    {% csrf_token %}
-    <label for="dia">Dia:</label>
-    <input type="date" id="dia" name="dia" required>
-    
-    <label for="hora">Hora:</label>
-    <input type="time" id="hora" name="hora" required>
 
-    <button type="submit">Adicionar Horário</button>
-</form>
+{% for medico in medicos %}
 
-<hr>
+<div class="medico-card">
 
-<h3>Seus Horários Cadastrados</h3>
-<ul>
-    {% for horario in horariosDisponiveis %}
-    <li>{{ horario.dia }} às {{ horario.hora }} {% if not horario.disponivel %}(Agendado){% endif %}</li>
-    {% endfor %}
-</ul>
+    <h3>Dr. {{ medico.user.first_name }} {{ medico.user.last_name }}</h3>
+
+    <p>Especialidade: {{ medico.especialidade }}</p>
+
+
+
+    <h4>Horários disponíveis:</h4>
+
+    <ul>
+
+        {% for horario in medico.horariodisponivel_set.all %}
+
+        <li>
+
+            {{ horario.dia }} - {{ horario.hora }}
+
+            {% if horario.disponivel %}
+
+            <form method="post" style="display:inline;">
+
+                {% csrf_token %}
+
+                <input type="hidden" name="medico_id" value="{{ medico.id }}">
+
+                <input type="hidden" name="horario_id" value="{{ horario.id }}">
+
+                <button type="submit">Agendar</button>
+
+            </form>
+
+            {% else %}
+
+            <span>(Indisponível)</span>
+
+            {% endif %}
+
+        </li>
+
+        {% endfor %}
+
+    </ul>
+
+</div>
+
+{% endfor %}
+
 {% endblock %}
