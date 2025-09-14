@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import PacienteSignUpForm, MedicoSignUpForm, PacienteLogin, MedicoLoginForm
 
+
 def paciente(request):
     if request.method == 'POST':
         form = PacienteSignUpForm(request.POST)
@@ -46,3 +47,5 @@ def medicoLogin(request):
     else:
         form = MedicoLoginForm()
     return render(request, 'registration/medicoLogin.html', {'form': form})
+
+

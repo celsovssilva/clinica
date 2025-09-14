@@ -1,16 +1,12 @@
-{% extends "../base.html" %}
+{% extends '../base.html' %}
+{% load static %}
 
-{% block title %}Área do Médico{% endblock %}
-
-{% block content %}
+{% block content%}
 <h2>Seus Pacientes para Hoje</h2>
-
 {% if pacientesDoDia %}
 <ul>
     {% for agendamento in pacientesDoDia %}
-    <li>
-        <strong>{{ agendamento.horario.hora }}</strong> - Paciente: {{ agendamento.paciente.user.get_full_name }}
-    </li>
+    <li><strong>{{ agendamento.horario.hora }}</strong> - {{ agendamento.paciente.user.get_full_name }}</li>
     {% endfor %}
 </ul>
 {% else %}
@@ -23,12 +19,10 @@
 <form method="post">
     {% csrf_token %}
     <label for="dia">Dia:</label>
-    <input type="date" id="dia" name="dia" required>
-    
+    <input type="date" name="dia" required>
     <label for="hora">Hora:</label>
-    <input type="time" id="hora" name="hora" required>
-
-    <button type="submit">Adicionar Horário</button>
+    <input type="time" name="hora" required>
+    <button type="submit">Adicionar</button>
 </form>
 
 <hr>
@@ -39,4 +33,5 @@
     <li>{{ horario.dia }} às {{ horario.hora }} {% if not horario.disponivel %}(Agendado){% endif %}</li>
     {% endfor %}
 </ul>
+
 {% endblock %}
