@@ -65,4 +65,5 @@ def principal(request):
         else:
             messages.error(request,"esse horario está indisponivel")
         return redirect('principal')
-    return render(request, 'consultorio/principal.html')
+    context = {'medicos': medicos}
+    return render(request, 'consultorio/principal.html', context)

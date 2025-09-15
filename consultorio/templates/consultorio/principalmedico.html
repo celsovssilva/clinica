@@ -1,12 +1,12 @@
 {% extends '../base.html' %}
 {% load static %}
 
-{% block content%}
+{% block content %}
 <h2>Seus Pacientes para Hoje</h2>
 {% if pacientesDoDia %}
 <ul>
     {% for agendamento in pacientesDoDia %}
-    <li><strong>{{ agendamento.horario.hora }}</strong> - {{ agendamento.paciente.user.get_full_name }}</li>
+    <li><strong>{{ agendamento.horario.hora }}</strong> - {{ agendamento.paciente.user.email }}</li>
     {% endfor %}
 </ul>
 {% else %}

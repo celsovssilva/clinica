@@ -6,15 +6,15 @@
 
 {% for medico in medicos %}
 <div class="medico-card">
-    <h3>Dr. {{ medico.user.get_full_name }}</h3>
+    <h3>Dr. {{ medico.user.email }}</h3>
     <p>Especialidade: {{ medico.especialidade }}</p>
 
     <h4>Horários disponíveis:</h4>
     <ul>
-        {% for horario in medico.horariodisponivel_set.all %}
+        {% for horario in medico.horario_set.all %}
         <li>
             {{ horario.dia }} - {{ horario.hora }}
-            {% if horario.disponivel %}
+            {% if horario.disponibilidade %}
             <form method="post" style="display:inline;">
                 {% csrf_token %}
                 <input type="hidden" name="medico_id" value="{{ medico.id }}">
