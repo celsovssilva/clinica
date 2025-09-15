@@ -23,6 +23,7 @@ urlpatterns = [
     path("servicos/",views.servicos,name="servicos"),
     path("principal/",views.principal,name="principal"),
     path("principalmedico/",views.principalMedico,name="principalMedico"),
+    path("agendamento/<int:agendamento_id>/concluir", views.concluido,name="concluido")
     
 
 ]

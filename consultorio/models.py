@@ -22,9 +22,20 @@ class Horario(models.Model):
 
 
 class Agendamento(models.Model):
+    STATUS_CHOICES = [
+        ('pendente', 'Pendente'),
+        ('concluido', 'Concluído'),
+        ('remarcado', 'Remarcado'),
+        ('cancelado', 'Cancelado'),
+    ]
+
     paciente= models.ForeignKey(Paciente, on_delete=models.CASCADE)
     medico= models.ForeignKey(Medico,on_delete=models.CASCADE)
     horario = models.OneToOneField(Horario,on_delete=models.CASCADE)
+    concluido=models.BooleanField(default=False)
+    status=models.CharField(max_length=20,choices=STATUS_CHOICES,default="pendente")
+    
 
     def __str__(self):
+        status="✔ Concluído" if self.concluido else "⏳ Pendente"
         return f"{self.paciente} com {self.medico} às {self.horario}"

@@ -12,22 +12,85 @@
     <h4>Horários disponíveis:</h4>
     <ul>
         {% for horario in medico.horario_set.all %}
-        <li>
-            {{ horario.dia }} - {{ horario.hora }}
-            {% if horario.disponibilidade %}
-            <form method="post" style="display:inline;">
-                {% csrf_token %}
-                <input type="hidden" name="medico_id" value="{{ medico.id }}">
-                <input type="hidden" name="horario_id" value="{{ horario.id }}">
-                <button type="submit">Agendar</button>
-            </form>
-            {% else %}
-            <span style="color: red;">(Indisponível)</span>
-            {% endif %}
-        </li>
+            {% with horario.agendamento as ag %}
+                {% if horario.disponibilidade %}
+                    {% if ag %}
+                        {% if not ag.concluido %}
+                            <li>
+                                {{ horario.dia }} - {{ horario.hora }}
+                                <form method="post" style="display:inline;">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="acao" value="agendar">
+                                    <input type="hidden" name="medico_id" value="{{ medico.id }}">
+                                    <input type="hidden" name="horario_id" value="{{ horario.id }}">
+                                    <button type="submit">Agendar</button>
+                                </form>
+                            </li>
+                        {% else %}
+                            <li>
+                                {{ horario.dia }} - {{ horario.hora }}
+                                <span style="color: red;">(Indisponível)</span>
+                            </li>
+                        {% endif %}
+                    {% else %}
+                        <li>
+                            {{ horario.dia }} - {{ horario.hora }}
+                            <form method="post" style="display:inline;">
+                                {% csrf_token %}
+                                <input type="hidden" name="acao" value="agendar">
+                                <input type="hidden" name="medico_id" value="{{ medico.id }}">
+                                <input type="hidden" name="horario_id" value="{{ horario.id }}">
+                                <button type="submit">Agendar</button>
+                            </form>
+                        </li>
+                    {% endif %}
+                {% else %}
+                    <li>
+                        {{ horario.dia }} - {{ horario.hora }}
+                        <span style="color: red;">(Indisponível)</span>
+                    </li>
+                {% endif %}
+            {% endwith %}
         {% endfor %}
     </ul>
 </div>
 {% endfor %}
+
+<hr>
+
+<h2>Suas Consultas Agendadas</h2>
+{% if agendamentos %}
+<ul>
+    {% for agendamento in agendamentos %}
+    <li>
+        {{ agendamento.horario.dia }} às {{ agendamento.horario.hora }} com {{ agendamento.medico }}
+
+        <form method="post" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="acao" value="cancelar">
+            <input type="hidden" name="agendamento_id" value="{{ agendamento.id }}">
+            <button type="submit">Cancelar</button>
+        </form>
+
+       
+        <form method="post" style="display:inline;">
+            {% csrf_token %}
+            <input type="hidden" name="acao" value="remarcar">
+            <input type="hidden" name="agendamento_id" value="{{ agendamento.id }}">
+            <select name="novo_horario_id">
+                {% for horario in agendamento.medico.horario_set.all %}
+                    {% if horario.disponibilidade %}
+                        <option value="{{ horario.id }}">{{ horario.dia }} - {{ horario.hora }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+            <button type="submit">Remarcar</button>
+        </form>
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>Você não tem consultas pendentes.</p>
+{% endif %}
 
 {% endblock %}

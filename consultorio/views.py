@@ -1,5 +1,5 @@
 from datetime import datetime
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Medico, Paciente, Horario, Agendamento
@@ -48,22 +48,74 @@ def principalMedico(request):
 
 @login_required
 def principal(request):
-    paciente= Paciente.objects.get(user=request.user)
+    paciente = Paciente.objects.get(user=request.user)
     medicos = Medico.objects.all()
-    
-    if request.method == "POST":
-        medico_id= request.POST.get("medico_id")
-        horario_id= request.POST.get("horario_id")
-        horario = Horario.objects.get(id=horario_id)
-        medico = Medico.objects.get(id=medico_id)
+    agendamentos = Agendamento.objects.filter(paciente=paciente, status='pendente')
 
-        if horario.disponibilidade:
-            Agendamento.objects.create(paciente=paciente,medico=medico, horario=horario)
-            horario.disponibilidade= False
-            horario.save()
-            messages.success(request,"consulta agendada com sucesso")
-        else:
-            messages.error(request,"esse horario está indisponivel")
-        return redirect('principal')
-    context = {'medicos': medicos}
+    if request.method == "POST":
+        acao = request.POST.get("acao")
+
+        if acao == "agendar":
+            medico_id = request.POST.get("medico_id")
+            horario_id = request.POST.get("horario_id")
+            horario = Horario.objects.get(id=horario_id)
+            medico = Medico.objects.get(id=medico_id)
+
+            if horario.disponibilidade:
+                Agendamento.objects.create(paciente=paciente, medico=medico, horario=horario)
+                horario.disponibilidade = False
+                horario.save()
+                messages.success(request, "Consulta agendada com sucesso")
+            else:
+                messages.error(request, "Esse horário está indisponível")
+
+        elif acao == "cancelar":
+            agendamento_id = request.POST.get("agendamento_id")
+            agendamento = Agendamento.objects.get(id=agendamento_id, paciente=paciente)
+            agendamento.status = "cancelado"
+            agendamento.save()
+            agendamento.horario.disponibilidade = True
+            agendamento.horario.save()
+            messages.success(request, "Consulta cancelada com sucesso")
+
+        elif acao == "remarcar":
+            agendamento_id = request.POST.get("agendamento_id")
+            novo_horario_id = request.POST.get("novo_horario_id")
+            agendamento = Agendamento.objects.get(id=agendamento_id, paciente=paciente)
+            novo_horario = Horario.objects.get(id=novo_horario_id)
+
+            if novo_horario.disponibilidade:
+                agendamento.status = "remarcado"
+                agendamento.save()
+                agendamento.horario.disponibilidade = True
+                agendamento.horario.save()
+
+                novo_horario.disponibilidade = False
+                novo_horario.save()
+
+                Agendamento.objects.create(
+                    paciente=paciente,
+                    medico=agendamento.medico,
+                    horario=novo_horario,
+                    status='pendente'
+                )
+                messages.success(request, "Consulta remarcada com sucesso")
+            else:
+                messages.error(request, "Novo horário indisponível")
+
+        return redirect("principal")
+
+    context = {
+        'medicos': medicos,
+        'agendamentos': agendamentos
+    }
     return render(request, 'consultorio/principal.html', context)
+
+
+def concluido(request,agendamento_id):
+    agendamento= get_object_or_404(Agendamento,id=agendamento_id,medico__user=request.user)
+    agendamento.concluido= True
+    agendamento.save()
+    agendamento.horario.disponibilidade=False
+    agendamento.horario.save()
+    return redirect('principalMedico')
