@@ -30,7 +30,7 @@
 <h3>Seus Horários Cadastrados</h3>
 <ul>
     {% for horario in horariosDisponiveis %}
-    <li>{{ horario.dia }} às {{ horario.hora }} {% if not horario.disponivel %}(Agendado){% endif %}</li>
+    <li>{{ horario.dia }} às {{ horario.hora }} {% if not horario.disponibilidade %}(Agendado){% endif %}</li>
     {% endfor %}
 </ul>
 

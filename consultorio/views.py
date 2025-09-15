@@ -31,7 +31,7 @@ def principalMedico(request):
 
         if hora2.minute != 0:
             messages.error(request, "Só é permitido cadastrar em hora cheia.")
-        elif Horario.objects.filter(medico=medico, dia=dia, hora=hora2).exists():
+        elif Horario.objects.filter(medico=medico, dia=dia, hora=hora2, disponibilidade=True).exists():
             messages.error(request, "Esse horário já está indisponível.")
         else:
             Horario.objects.create(medico=medico, dia=dia, hora=hora2)
