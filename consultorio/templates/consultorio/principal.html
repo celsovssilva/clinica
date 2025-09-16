@@ -11,46 +11,19 @@
 
     <h4>Horários disponíveis:</h4>
     <ul>
-        {% for horario in medico.horario_set.all %}
-            {% with horario.agendamento as ag %}
-                {% if horario.disponibilidade %}
-                    {% if ag %}
-                        {% if not ag.concluido %}
-                            <li>
-                                {{ horario.dia }} - {{ horario.hora }}
-                                <form method="post" style="display:inline;">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="acao" value="agendar">
-                                    <input type="hidden" name="medico_id" value="{{ medico.id }}">
-                                    <input type="hidden" name="horario_id" value="{{ horario.id }}">
-                                    <button type="submit">Agendar</button>
-                                </form>
-                            </li>
-                        {% else %}
-                            <li>
-                                {{ horario.dia }} - {{ horario.hora }}
-                                <span style="color: red;">(Indisponível)</span>
-                            </li>
-                        {% endif %}
-                    {% else %}
-                        <li>
-                            {{ horario.dia }} - {{ horario.hora }}
-                            <form method="post" style="display:inline;">
-                                {% csrf_token %}
-                                <input type="hidden" name="acao" value="agendar">
-                                <input type="hidden" name="medico_id" value="{{ medico.id }}">
-                                <input type="hidden" name="horario_id" value="{{ horario.id }}">
-                                <button type="submit">Agendar</button>
-                            </form>
-                        </li>
-                    {% endif %}
-                {% else %}
-                    <li>
-                        {{ horario.dia }} - {{ horario.hora }}
-                        <span style="color: red;">(Indisponível)</span>
-                    </li>
-                {% endif %}
-            {% endwith %}
+        {% for horario in medico.horarios_disponiveis %}
+            <li>
+                {{ horario.dia|date:"d/m/Y" }} - {{ horario.hora|date:"H:i" }}
+                <form method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <input type="hidden" name="acao" value="agendar">
+                    <input type="hidden" name="medico_id" value="{{ medico.id }}">
+                    <input type="hidden" name="horario_id" value="{{ horario.id }}">
+                    <button type="submit">Agendar</button>
+                </form>
+            </li>
+        {% empty %}
+            <li>Não há horários disponíveis para este médico.</li>
         {% endfor %}
     </ul>
 </div>
@@ -62,35 +35,34 @@
 {% if agendamentos %}
 <ul>
     {% for agendamento in agendamentos %}
-    <li>
-        {{ agendamento.horario.dia }} às {{ agendamento.horario.hora }} com {{ agendamento.medico }}
+        <li>
+            {{ agendamento.horario.dia|date:"d/m/Y" }} às {{ agendamento.horario.hora|date:"H:i" }} com {{ agendamento.medico }}
 
-        <form method="post" style="display:inline;">
-            {% csrf_token %}
-            <input type="hidden" name="acao" value="cancelar">
-            <input type="hidden" name="agendamento_id" value="{{ agendamento.id }}">
-            <button type="submit">Cancelar</button>
-        </form>
+            <form method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="acao" value="cancelar">
+                <input type="hidden" name="agendamento_id" value="{{ agendamento.id }}">
+                <button type="submit">Cancelar</button>
+            </form>
 
-       
-        <form method="post" style="display:inline;">
-            {% csrf_token %}
-            <input type="hidden" name="acao" value="remarcar">
-            <input type="hidden" name="agendamento_id" value="{{ agendamento.id }}">
-            <select name="novo_horario_id">
-                {% for horario in agendamento.medico.horario_set.all %}
-                    {% if horario.disponibilidade %}
-                        <option value="{{ horario.id }}">{{ horario.dia }} - {{ horario.hora }}</option>
-                    {% endif %}
-                {% endfor %}
-            </select>
-            <button type="submit">Remarcar</button>
-        </form>
-    </li>
+            <form method="post" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="acao" value="remarcar">
+                <input type="hidden" name="agendamento_id" value="{{ agendamento.id }}">
+                <select name="novo_horario_id">
+                    {% for horario in agendamento.medico.horario_set.all %}
+                        {% if horario.disponibilidade and horario.dia|date:"Y-m-d" > agora|date:"Y-m-d" or horario.dia|date:"Y-m-d" == agora|date:"Y-m-d" and horario.hora|date:"H:i" > agora|date:"H:i" %}
+                             <option value="{{ horario.id }}">{{ horario.dia|date:"d/m/Y" }} - {{ horario.hora|date:"H:i" }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+                <button type="submit">Remarcar</button>
+            </form>
+        </li>
+    {% empty %}
+        <p>Você não tem consultas pendentes.</p>
     {% endfor %}
 </ul>
-{% else %}
-<p>Você não tem consultas pendentes.</p>
 {% endif %}
 
 {% endblock %}

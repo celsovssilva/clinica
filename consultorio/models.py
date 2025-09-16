@@ -31,7 +31,7 @@ class Agendamento(models.Model):
 
     paciente= models.ForeignKey(Paciente, on_delete=models.CASCADE)
     medico= models.ForeignKey(Medico,on_delete=models.CASCADE)
-    horario = models.OneToOneField(Horario,on_delete=models.CASCADE)
+    horario = models.ForeignKey(Horario,on_delete=models.CASCADE)
     concluido=models.BooleanField(default=False)
     status=models.CharField(max_length=20,choices=STATUS_CHOICES,default="pendente")
     

@@ -10,7 +10,7 @@
         <strong>{{ agendamento.horario.hora }}</strong> - {{ agendamento.paciente.user.email }}
         <span style="color: gray;">({{ agendamento.get_status_display }})</span>
         {% if agendamento.status == 'pendente' %}
-            <a href="{% url 'marcar_concluido' agendamento.id %}">Marcar como concluído</a>
+            <a href="{% url 'concluido' agendamento.id %}">Marcar como concluído</a>
         {% elif agendamento.status == 'concluido' %}
             <span style="color: green;">✔ Concluído</span>
         {% endif %}
