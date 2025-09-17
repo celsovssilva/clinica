@@ -1,28 +1,30 @@
-<!DOCTYPE html>
 {% load static %}
+
+<!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Clínica {% endblock %}</title>
+    <title>{% block title %}Sua Clínica{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'style.css' %}">
 </head>
 <body>
-    <header>
-        <nav class="navbar">
-            <div class="logo">
-                <h1>Clínica Dra. Hellen Nunes</h1>
+
+    <nav class="navbar">
+        <div>
+            <a href="{% url 'home' %}">Home</a>
             </div>
-            <div class="nav-links">
-                <a href="{% url 'servicos' %}">Serviços</a>
-            </div>
-        </nav>
-    </header>
+        <div class="user-actions">
+            <a href="{% url 'servicos' %}" class="btn btn-primary">Serviços</a>
+        </div>
+    </nav>
 
     <main>
         {% block content %}
         {% endblock %}
     </main>
+
+   
 
 </body>
 </html>

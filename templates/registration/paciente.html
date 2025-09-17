@@ -1,18 +1,18 @@
-{% extends "../base.html" %}
- {% load static %}
+{% extends '../base.html' %}
+{% load static %}
 
-{% block title %}Cadastro de Paciente{% endblock %}
+{% block title %}Login de Paciente{% endblock %}
 
 {% block content %}
-<div class="container" style="text-align: center;">
-    <h2>Cadastro de Paciente</h2>
-    <form method="post">
-        {% csrf_token %}
-
-       
-        {{ form.as_p }}
-
-        <button type="submit">Cadastrar</button>
-    </form>
+<div class="form-center-container">
+    <div class="form-card">
+        <h2>Login de Paciente</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Entrar</button>
+        </form>
+        <p class="form-link">Não tem uma conta? <a href="{% url 'pacienteurl' %}">Cadastre-se aqui</a></p>
+    </div>
 </div>
 {% endblock %}

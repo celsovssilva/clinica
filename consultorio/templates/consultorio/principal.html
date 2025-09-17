@@ -2,16 +2,17 @@
 {% load static %}
 
 {% block content %}
-<h2>Médicos Disponíveis</h2>
+<div class="container">
+    <h2>Médicos Disponíveis</h2>
 
-{% for medico in medicos %}
-<div class="medico-card">
-    <h3>Dr. {{ medico.user.email }}</h3>
-    <p>Especialidade: {{ medico.especialidade }}</p>
+    {% for medico in medicos %}
+    <div class="medico-card">
+        <h3>Dr. {{ medico.user.email }}</h3>
+        <p>Especialidade: {{ medico.especialidade }}</p>
 
-    <h4>Horários disponíveis:</h4>
-    <ul>
-        {% for horario in medico.horarios_disponiveis %}
+        <h4>Horários disponíveis:</h4>
+        <ul>
+            {% for horario in medico.horarios_disponiveis %}
             <li>
                 {{ horario.dia|date:"d/m/Y" }} - {{ horario.hora|date:"H:i" }}
                 <form method="post" style="display:inline;">
@@ -22,19 +23,19 @@
                     <button type="submit">Agendar</button>
                 </form>
             </li>
-        {% empty %}
+            {% empty %}
             <li>Não há horários disponíveis para este médico.</li>
-        {% endfor %}
-    </ul>
-</div>
-{% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endfor %}
 
-<hr>
+    <hr>
 
-<h2>Suas Consultas Agendadas</h2>
-{% if agendamentos %}
-<ul>
-    {% for agendamento in agendamentos %}
+    <h2>Suas Consultas Agendadas</h2>
+    {% if agendamentos %}
+    <ul>
+        {% for agendamento in agendamentos %}
         <li>
             {{ agendamento.horario.dia|date:"d/m/Y" }} às {{ agendamento.horario.hora|date:"H:i" }} com {{ agendamento.medico }}
 
@@ -59,10 +60,11 @@
                 <button type="submit">Remarcar</button>
             </form>
         </li>
-    {% empty %}
+        {% empty %}
         <p>Você não tem consultas pendentes.</p>
-    {% endfor %}
-</ul>
-{% endif %}
+        {% endfor %}
+    </ul>
+    {% endif %}
 
+</div>
 {% endblock %}

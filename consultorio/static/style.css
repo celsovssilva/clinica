@@ -164,3 +164,59 @@ form {
     width: 100%;
     margin-top: 20px;
 }
+
+/* Estilos adicionados para as novas páginas */
+.container {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    text-align: left; /* Alinhamento para o conteúdo interno do container */
+}
+
+/* Estilo para os cartões de médicos */
+.medico-card {
+    background-color: #fff;
+    border: 1px solid var(--marrom-escuro);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.medico-card h3 {
+    color: var(--dourado);
+    margin-top: 0;
+}
+
+/* Estilo para listas dentro do container */
+.container ul {
+    list-style: none;
+    padding: 0;
+}
+
+.container ul li {
+    background-color: #f7f3ed;
+    border: 1px solid var(--bege-claro);
+    padding: 1rem;
+    margin-bottom: 0.5rem;
+    border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* Estilo para os botões e formulários dentro das listas */
+.container button, .container input[type="submit"] {
+    background-color: var(--dourado);
+    color: var(--marrom-escuro);
+    border: none;
+    padding: 8px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.container button:hover, .container input[type="submit"]:hover {
+    background-color: #a8790a;
+}
