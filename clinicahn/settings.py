@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -25,12 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-9888kn)17cb17d(q!ud7-%y&x9z9(&y64xxp3drl8glk&quf-8'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = [
-    'https://clinica-c8no.onrender.com',
-    '.onrender.com'
-]
+ALLOWED_HOSTS = []
 
 
 # Application definition
@@ -80,10 +76,15 @@ WSGI_APPLICATION = 'clinicahn.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600
-    )
+    'default': {
+        'ENGINE': 'postgresql://projeto_clinica_db_user:MBSDU7h4BYqraXZKRCfZgKgYdh1bu7OE@dpg-d35c2333fgac73bb82t0-a/projeto_clinica_db',
+        'NAME': 'clinica',
+        'USER': 'postgres',
+        'PASSWORD': '1234',        
+        'HOST': 'localhost',
+        'PORT': '5432',
+        
+    }
 }
 
 
