@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'clinicahn.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'postgresql://projeto_clinica_db_user:MBSDU7h4BYqraXZKRCfZgKgYdh1bu7OE@dpg-d35c2333fgac73bb82t0-a/projeto_clinica_db',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'clinica',
         'USER': 'postgres',
         'PASSWORD': '1234',        
