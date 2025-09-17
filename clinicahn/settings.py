@@ -27,7 +27,10 @@ SECRET_KEY = 'django-insecure-9888kn)17cb17d(q!ud7-%y&x9z9(&y64xxp3drl8glk&quf-8
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = [ 'https://clinica.onrender.com']
+ALLOWED_HOSTS = [
+    'https://clinica-c8no.onrender.com',
+    '.onrender.com'
+]
 
 
 # Application definition
